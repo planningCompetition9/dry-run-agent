@@ -2,13 +2,14 @@ import sys
 import signal
 import time
 
+
 from pyRDDLGym import RDDLEnv
 from pyRDDLGym import ExampleManager
 from pyRDDLGym.Policies.Agents import NoOpAgent
 
 ############################################################
 # IMPORT THE AGENT AND OTHER DEPENDENCIES OF YOUR SOLUTION #
-
+from PPORandomAgent import PPORandomAgent
 
 
 
@@ -42,13 +43,10 @@ def main(env, inst, method_name=None, episodes=1):
 
     ################################################################
     # Initialize your agent here:
-    # remove the noop agent:
-    agent = NoOpAgent(action_space=myEnv.action_space,
-                        num_actions=myEnv.numConcurrentActions)
+    agent = PPORandomAgent(stateSize = len(myEnv.observation_space), actionSpace=myEnv.action_space)
 
 
     ################################################################
-
 
     signal.signal(signal.SIGALRM, signal_handler)
 
@@ -67,9 +65,7 @@ def main(env, inst, method_name=None, episodes=1):
                     start = time.time()
                     #################################################################
                     # replace the following line of code with your agent call
-                    action = agent.sample_action()
-
-
+                    action = agent.act(state=state)
 
                     #################################################################
                     finish = time.time()
